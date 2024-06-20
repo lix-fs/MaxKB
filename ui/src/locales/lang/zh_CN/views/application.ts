@@ -52,6 +52,7 @@ export default {
           '通过调整提示词内容，可以引导大模型聊天方向，该提示词会被固定在上下文的开头。可以使用变量：{data} 是携带知识库中已知信息；{question} 是用户提出的问题。'
       },
       multipleRoundsDialogue: '多轮对话',
+      dialogueNumber: '上下文对话轮数',
       relatedKnowledgeBase: '关联知识库',
       relatedKnowledgeBaseWhere: '关联知识库展示在这里',
       prologue: '开场白',

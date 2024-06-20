@@ -15,6 +15,7 @@ from application.chat_pipeline.step.generate_human_message_step.i_generate_human
     IGenerateHumanMessageStep
 from application.models import ChatRecord
 from common.util.split_model import flat_map
+import logging
 
 
 class BaseGenerateHumanMessageStep(IGenerateHumanMessageStep):

@@ -17,204 +17,133 @@
         </div>
         <div class="scrollbar-height-left">
           <el-scrollbar>
-            <el-form
-              hide-required-asterisk
-              ref="applicationFormRef"
-              :model="applicationForm"
-              :rules="rules"
-              label-position="top"
-              require-asterisk-position="right"
-              class="p-24"
-              style="padding-top: 0"
-            >
+            <el-form hide-required-asterisk ref="applicationFormRef" :model="applicationForm" :rules="rules"
+              label-position="top" require-asterisk-position="right" class="p-24" style="padding-top: 0">
               <el-form-item prop="name">
                 <template #label>
                   <div class="flex-between">
-                    <span
-                      >{{ $t('views.application.applicationForm.form.appName.label') }}
-                      <span class="danger">*</span></span
-                    >
+                    <span>{{ $t('views.application.applicationForm.form.appName.label') }}
+                      <span class="danger">*</span></span>
                   </div>
                 </template>
-                <el-input
-                  v-model="applicationForm.name"
-                  maxlength="64"
-                  :placeholder="$t('views.application.applicationForm.form.appName.placeholder')"
-                  show-word-limit
-                />
+                <el-input v-model="applicationForm.name" maxlength="64"
+                  :placeholder="$t('views.application.applicationForm.form.appName.placeholder')" show-word-limit />
               </el-form-item>
-              <el-form-item
-                :label="$t('views.application.applicationForm.form.appDescription.label')"
-              >
-                <el-input
-                  v-model="applicationForm.desc"
-                  type="textarea"
-                  :placeholder="
-                    $t('views.application.applicationForm.form.appDescription.placeholder')
-                  "
-                  :rows="3"
-                  maxlength="256"
-                  show-word-limit
-                />
+              <el-form-item :label="$t('views.application.applicationForm.form.appDescription.label')">
+                <el-input v-model="applicationForm.desc" type="textarea" :placeholder="$t('views.application.applicationForm.form.appDescription.placeholder')
+    " :rows="3" maxlength="256" show-word-limit />
               </el-form-item>
 
-              <el-form-item
-                :label="$t('views.application.applicationForm.form.aiModel.label')"
-                prop="model_id"
-              >
+              <el-form-item :label="$t('views.application.applicationForm.form.aiModel.label')" prop="model_id">
                 <template #label>
                   <div class="flex-between">
                     <span>{{ $t('views.application.applicationForm.form.aiModel.label') }}</span>
                   </div>
                 </template>
-                <el-select
-                  v-model="applicationForm.model_id"
-                  :placeholder="$t('views.application.applicationForm.form.aiModel.placeholder')"
-                  class="w-full"
-                  popper-class="select-model"
-                  :clearable="true"
-                >
-                  <el-option-group
-                    v-for="(value, label) in modelOptions"
-                    :key="value"
-                    :label="relatedObject(providerOptions, label, 'provider')?.name"
-                  >
-                    <el-option
-                      v-for="item in value.filter((v: any) => v.status === 'SUCCESS')"
-                      :key="item.id"
-                      :label="item.name"
-                      :value="item.id"
-                      class="flex-between"
-                    >
+                <el-select v-model="applicationForm.model_id"
+                  :placeholder="$t('views.application.applicationForm.form.aiModel.placeholder')" class="w-full"
+                  popper-class="select-model" :clearable="true">
+                  <el-option-group v-for="(value, label) in modelOptions" :key="value"
+                    :label="relatedObject(providerOptions, label, 'provider')?.name">
+                    <el-option v-for="item in value.filter((v: any) => v.status === 'SUCCESS')" :key="item.id"
+                      :label="item.name" :value="item.id" class="flex-between">
                       <div class="flex">
-                        <span
-                          v-html="relatedObject(providerOptions, label, 'provider')?.icon"
-                          class="model-icon mr-8"
-                        ></span>
+                        <span v-html="relatedObject(providerOptions, label, 'provider')?.icon"
+                          class="model-icon mr-8"></span>
                         <span>{{ item.name }}</span>
                       </div>
-                      <el-icon class="check-icon" v-if="item.id === applicationForm.model_id"
-                        ><Check
-                      /></el-icon>
+                      <el-icon class="check-icon" v-if="item.id === applicationForm.model_id">
+                        <Check />
+                      </el-icon>
                     </el-option>
                     <!-- 不可用 -->
-                    <el-option
-                      v-for="item in value.filter((v: any) => v.status !== 'SUCCESS')"
-                      :key="item.id"
-                      :label="item.name"
-                      :value="item.id"
-                      class="flex-between"
-                      disabled
-                    >
+                    <el-option v-for="item in value.filter((v: any) => v.status !== 'SUCCESS')" :key="item.id"
+                      :label="item.name" :value="item.id" class="flex-between" disabled>
                       <div class="flex">
-                        <span
-                          v-html="relatedObject(providerOptions, label, 'provider')?.icon"
-                          class="model-icon mr-8"
-                        ></span>
+                        <span v-html="relatedObject(providerOptions, label, 'provider')?.icon"
+                          class="model-icon mr-8"></span>
                         <span>{{ item.name }}</span>
                         <span class="danger">{{
-                          $t('views.application.applicationForm.form.aiModel.unavailable')
-                        }}</span>
+    $t('views.application.applicationForm.form.aiModel.unavailable')
+  }}</span>
                       </div>
-                      <el-icon class="check-icon" v-if="item.id === applicationForm.model_id"
-                        ><Check
-                      /></el-icon>
+                      <el-icon class="check-icon" v-if="item.id === applicationForm.model_id">
+                        <Check />
+                      </el-icon>
                     </el-option>
                   </el-option-group>
                   <template #footer>
                     <div class="w-full text-left cursor" @click="openCreateModel()">
                       <el-button type="primary" link>
-                        <el-icon class="mr-4"><Plus /></el-icon>
+                        <el-icon class="mr-4">
+                          <Plus />
+                        </el-icon>
                         {{ $t('views.application.applicationForm.form.addModel') }}
                       </el-button>
                     </div>
                   </template>
                 </el-select>
               </el-form-item>
-              <el-form-item
-                :label="$t('views.application.applicationForm.form.prompt.label')"
-                prop="model_setting.prompt"
-              >
+              <el-form-item :label="$t('views.application.applicationForm.form.prompt.label')"
+                prop="model_setting.prompt">
                 <template #label>
                   <div class="flex align-center">
                     <div class="flex-between mr-4">
-                      <span
-                        >{{ $t('views.application.applicationForm.form.prompt.label') }}
-                        <span class="danger">*</span></span
-                      >
+                      <span>{{ $t('views.application.applicationForm.form.prompt.label') }}
+                        <span class="danger">*</span></span>
                     </div>
                     <el-tooltip effect="dark" placement="right">
                       <template #content>{{
-                        $t('views.application.applicationForm.form.prompt.tooltip', {
-                          data: '{data}',
-                          question: '{question}'
-                        })
-                      }}</template>
+    $t('views.application.applicationForm.form.prompt.tooltip', {
+      data: '{data}',
+      question: '{question}'
+    })
+  }}</template>
                       <AppIcon iconName="app-warning" class="app-warning-icon"></AppIcon>
                     </el-tooltip>
                   </div>
                 </template>
-                <el-input
-                  v-model="applicationForm.model_setting.prompt"
-                  :rows="6"
-                  type="textarea"
-                  maxlength="2048"
-                  :placeholder="defaultPrompt"
-                />
+                <el-input v-model="applicationForm.model_setting.prompt" :rows="6" type="textarea" maxlength="2048"
+                  :placeholder="defaultPrompt" />
               </el-form-item>
-              <el-form-item
-                :label="$t('views.application.applicationForm.form.multipleRoundsDialogue')"
-                @click.prevent
-              >
-                <el-switch
-                  size="small"
-                  v-model="applicationForm.multiple_rounds_dialogue"
-                ></el-switch>
+              <el-form-item :label="$t('views.application.applicationForm.form.multipleRoundsDialogue')" @click.prevent>
+                <el-switch size="small" v-model="applicationForm.multiple_rounds_dialogue"></el-switch>
               </el-form-item>
-              <el-form-item
-                label="$t('views.application.applicationForm.form.relatedKnowledgeBase')"
-              >
+              <el-form-item v-if="applicationForm.multiple_rounds_dialogue"
+                :label="$t('views.application.applicationForm.form.dialogueNumber')">
+                <el-input-number size="small" v-model="applicationForm.dialogue_number" :max="50"></el-input-number>
+              </el-form-item>
+              <el-form-item label="$t('views.application.applicationForm.form.relatedKnowledgeBase')">
                 <template #label>
                   <div class="flex-between">
                     <span>{{
-                      $t('views.application.applicationForm.form.relatedKnowledgeBase')
-                    }}</span>
+    $t('views.application.applicationForm.form.relatedKnowledgeBase')
+  }}</span>
                     <div>
                       <el-button type="primary" link @click="openParamSettingDialog">
-                        <AppIcon iconName="app-operation" class="mr-4"></AppIcon
-                        >{{ $t('views.application.applicationForm.form.paramSetting') }}
+                        <AppIcon iconName="app-operation" class="mr-4"></AppIcon>{{
+    $t('views.application.applicationForm.form.paramSetting') }}
                       </el-button>
                       <el-button type="primary" link @click="openDatasetDialog">
-                        <el-icon class="mr-4"><Plus /></el-icon
-                        >{{ $t('views.application.applicationForm.form.add') }}
+                        <el-icon class="mr-4">
+                          <Plus />
+                        </el-icon>{{ $t('views.application.applicationForm.form.add') }}
                       </el-button>
                     </div>
                   </div>
                 </template>
                 <div class="w-full">
                   <el-text type="info" v-if="applicationForm.dataset_id_list?.length === 0">{{
-                    $t('views.application.applicationForm.form.relatedKnowledgeBaseWhere')
-                  }}</el-text>
+    $t('views.application.applicationForm.form.relatedKnowledgeBaseWhere')
+  }}</el-text>
                   <el-row :gutter="12" v-else>
-                    <el-col
-                      :xs="24"
-                      :sm="24"
-                      :md="24"
-                      :lg="12"
-                      :xl="12"
-                      class="mb-8"
-                      v-for="(item, index) in applicationForm.dataset_id_list"
-                      :key="index"
-                    >
+                    <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12" class="mb-8"
+                      v-for="(item, index) in applicationForm.dataset_id_list" :key="index">
                       <el-card class="relate-dataset-card" shadow="never">
                         <div class="flex-between">
                           <div class="flex align-center">
-                            <AppAvatar
-                              v-if="relatedObject(datasetList, item, 'id')?.type === '1'"
-                              class="mr-8 avatar-purple"
-                              shape="square"
-                              :size="32"
-                            >
+                            <AppAvatar v-if="relatedObject(datasetList, item, 'id')?.type === '1'"
+                              class="mr-8 avatar-purple" shape="square" :size="32">
                               <img src="@/assets/icon_web.svg" style="width: 58%" alt="" />
                             </AppAvatar>
 
@@ -226,7 +155,9 @@
                             </div>
                           </div>
                           <el-button text @click="removeDataset(item)">
-                            <el-icon><Close /></el-icon>
+                            <el-icon>
+                              <Close />
+                            </el-icon>
                           </el-button>
                         </div>
                       </el-card>
@@ -235,27 +166,17 @@
                 </div>
               </el-form-item>
               <el-form-item :label="$t('views.application.applicationForm.form.prologue')">
-                <MdEditor
-                  class="prologue-md-editor"
-                  v-model="applicationForm.prologue"
-                  :preview="false"
-                  :toolbars="[]"
-                  :footers="[]"
-                />
+                <MdEditor class="prologue-md-editor" v-model="applicationForm.prologue" :preview="false" :toolbars="[]"
+                  :footers="[]" />
               </el-form-item>
               <el-form-item @click.prevent>
                 <template #label>
                   <div class="flex align-center">
                     <span class="mr-4">{{
-                      $t('views.application.applicationForm.form.problemOptimization.label')
-                    }}</span>
-                    <el-tooltip
-                      effect="dark"
-                      :content="
-                        $t('views.application.applicationForm.form.problemOptimization.tooltip')
-                      "
-                      placement="right"
-                    >
+    $t('views.application.applicationForm.form.problemOptimization.label')
+  }}</span>
+                    <el-tooltip effect="dark" :content="$t('views.application.applicationForm.form.problemOptimization.tooltip')
+    " placement="right">
                       <AppIcon iconName="app-warning" class="app-warning-icon"></AppIcon>
                     </el-tooltip>
                   </div>
@@ -266,15 +187,15 @@
           </el-scrollbar>
         </div>
         <div class="text-right border-t p-16">
-          <el-button v-if="!id" @click="router.push({ path: `/application` })"
-            >{{ $t('views.application.applicationForm.buttons.cancel') }}
+          <el-button v-if="!id" @click="router.push({ path: `/application` })">{{
+    $t('views.application.applicationForm.buttons.cancel') }}
           </el-button>
           <el-button type="primary" @click="submit(applicationFormRef)" :disabled="loading">
             {{
-              id
-                ? $t('views.application.applicationForm.buttons.save')
-                : $t('views.application.applicationForm.buttons.create')
-            }}
+    id
+      ? $t('views.application.applicationForm.buttons.save')
+      : $t('views.application.applicationForm.buttons.create')
+  }}
           </el-button>
         </div>
       </el-col>
@@ -285,7 +206,7 @@
         <div class="dialog-bg">
           <h4 class="p-24">
             {{
-              applicationForm?.name || $t('views.application.applicationForm.form.appName.label')
+            applicationForm?.name || $t('views.application.applicationForm.form.appName.label')
             }}
           </h4>
           <div class="scrollbar-height">
@@ -296,20 +217,11 @@
     </el-row>
 
     <ParamSettingDialog ref="ParamSettingDialogRef" @refresh="refreshParam" />
-    <AddDatasetDialog
-      ref="AddDatasetDialogRef"
-      @addData="addDataset"
-      :data="datasetList"
-      @refresh="refresh"
-      :loading="datasetLoading"
-    />
+    <AddDatasetDialog ref="AddDatasetDialogRef" @addData="addDataset" :data="datasetList" @refresh="refresh"
+      :loading="datasetLoading" />
 
     <!-- 添加模版 -->
-    <CreateModelDialog
-      ref="createModelRef"
-      @submit="getModel"
-      @change="openCreateModel($event)"
-    ></CreateModelDialog>
+    <CreateModelDialog ref="createModelRef" @submit="getModel" @change="openCreateModel($event)"></CreateModelDialog>
     <SelectProviderDialog ref="selectProviderRef" @change="openCreateModel($event)" />
   </LayoutContainer>
 </template>
@@ -357,6 +269,7 @@ const applicationForm = ref<ApplicationFormType>({
   desc: '',
   model_id: '',
   multiple_rounds_dialogue: false,
+  dialogue_number: 0,
   prologue: t('views.application.prompt.defaultPrologue'),
   dataset_id_list: [],
   dataset_setting: {
@@ -520,6 +433,15 @@ onMounted(() => {
     getDetail()
   }
 })
+watch(
+  // 当multiple_rounds_dialogue为false时，dialogue_number为0
+  () => applicationForm.value.multiple_rounds_dialogue,
+  (val) => {
+    if (!val) {
+      applicationForm.value.dialogue_number = 0
+    }
+  }
+)
 </script>
 <style lang="scss" scoped>
 .create-application {
@@ -527,26 +449,32 @@ onMounted(() => {
     color: var(--app-text-color);
     border-radius: 4px;
   }
+
   .dialog-bg {
     border-radius: 8px;
     background: var(--dialog-bg-gradient-color);
     overflow: hidden;
     box-sizing: border-box;
   }
+
   .scrollbar-height-left {
     height: calc(var(--app-main-height) - 127px);
   }
+
   .scrollbar-height {
     height: calc(var(--app-main-height) - 150px);
   }
 }
+
 .model-icon {
   width: 20px;
 }
+
 .check-icon {
   position: absolute;
   right: 10px;
 }
+
 .prologue-md-editor {
   height: 150px;
 }

@@ -32,6 +32,7 @@ from common.util.split_model import flat_map
 from dataset.models import Paragraph, Document
 from setting.models import Model, Status
 from setting.models_provider.constants.model_provider_constants import ModelProvideConstants
+import logging
 
 chat_cache = caches['model_cache']
 

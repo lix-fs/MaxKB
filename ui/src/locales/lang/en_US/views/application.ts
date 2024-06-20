@@ -54,6 +54,7 @@ export default {
           'By adjusting the content of the prompt, you can guide the direction of the large model conversation. This prompt will be fixed at the beginning of the context. Variables used: {data} carries known information from the knowledge base; {question} is the question posed by the user.'
       },
       multipleRoundsDialogue: 'Multiple Rounds Dialogue',
+      dialogueNumber: 'Number of Contextual Dialogue Rounds',
       relatedKnowledgeBase: 'Related Knowledge Base',
       relatedKnowledgeBaseWhere: 'Associated knowledge bases are displayed here',
       prologue: 'Prologue',

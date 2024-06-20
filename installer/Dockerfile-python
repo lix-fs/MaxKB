@@ -1,0 +1,11 @@
+FROM debian:bookworm-slim
+ 
+ARG DEPENDENCIES="                    \
+        curl                          \
+        vim                           \
+        python3.11-mini               \
+        python3.11-venv"
+
+RUN apt-get update && apt-get install -y --no-install-recommends $DEPENDENCIES && \
+    apt-get clean all  && \
+    rm -rf /var/lib/apt/lists/*

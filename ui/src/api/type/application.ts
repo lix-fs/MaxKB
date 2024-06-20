@@ -5,6 +5,7 @@ interface ApplicationFormType {
   desc?: string
   model_id?: string
   multiple_rounds_dialogue?: boolean
+  dialogue_number?: number
   prologue?: string
   dataset_id_list?: string[]
   dataset_setting?: any

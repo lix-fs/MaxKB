@@ -113,6 +113,7 @@ class ApplicationSerializer(serializers.Serializer):
     model_id = serializers.CharField(required=False, allow_null=True, allow_blank=True,
                                      error_messages=ErrMessage.char("模型"))
     multiple_rounds_dialogue = serializers.BooleanField(required=True, error_messages=ErrMessage.char("多轮对话"))
+    dialogue_number = serializers.IntegerField(required=False, max_value=50, min_value=0, error_messages=ErrMessage.integer("上下文对话轮数"))
     prologue = serializers.CharField(required=False, allow_null=True, allow_blank=True, max_length=4096,
                                      error_messages=ErrMessage.char("开场白"))
     dataset_id_list = serializers.ListSerializer(required=False, child=serializers.UUIDField(required=True),
@@ -302,7 +303,7 @@ class ApplicationSerializer(serializers.Serializer):
         def to_application_model(user_id: str, application: Dict):
             return Application(id=uuid.uuid1(), name=application.get('name'), desc=application.get('desc'),
                                prologue=application.get('prologue'),
-                               dialogue_number=3 if application.get('multiple_rounds_dialogue') else 0,
+                               dialogue_number=application.get('dialogue_number') if application.get('dialogue_number') else 0,
                                user_id=user_id, model_id=application.get('model_id'),
                                dataset_setting=application.get('dataset_setting'),
                                model_setting=application.get('model_setting'),
@@ -403,7 +404,6 @@ class ApplicationSerializer(serializers.Serializer):
         @staticmethod
         def reset_application(application: Dict):
             application['multiple_rounds_dialogue'] = True if application.get('dialogue_number') > 0 else False
-            del application['dialogue_number']
             if 'dataset_setting' in application:
                 application['dataset_setting'] = {'search_mode': 'embedding', 'no_references_setting': {
                     'status': 'ai_questioning',
@@ -505,13 +505,13 @@ class ApplicationSerializer(serializers.Serializer):
                     user_id=application.user_id).first()
                 if model is None:
                     raise AppApiException(500, "模型不存在")
-            update_keys = ['name', 'desc', 'model_id', 'multiple_rounds_dialogue', 'prologue', 'status',
+            update_keys = ['name', 'desc', 'model_id', 'dialogue_number', 'prologue', 'status',
                            'dataset_setting', 'model_setting', 'problem_optimization',
                            'api_key_is_active', 'icon']
             for update_key in update_keys:
                 if update_key in instance and instance.get(update_key) is not None:
-                    if update_key == 'multiple_rounds_dialogue':
-                        application.__setattr__('dialogue_number', 0 if not instance.get(update_key) else 3)
+                    if update_key == 'dialogue_number':
+                        application.__setattr__('dialogue_number', instance.get(update_key) if instance.get(update_key) else 0)
                     else:
                         application.__setattr__(update_key, instance.get(update_key))
             application.save()

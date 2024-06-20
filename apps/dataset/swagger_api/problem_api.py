@@ -92,7 +92,7 @@ class ProblemApi(ApiMixin):
                 type=openapi.TYPE_OBJECT,
                 required=['content'],
                 properties={
-                    'content': openapi.Schema(type=openapi.TYPE_STRING, max_length=4096, title="分段内容",
+                    'content': openapi.Schema(type=openapi.TYPE_STRING, max_length=32768, title="分段内容",
                                               description="分段内容"),
                     'title': openapi.Schema(type=openapi.TYPE_STRING, max_length=256, title="分段标题",
                                             description="分段标题"),

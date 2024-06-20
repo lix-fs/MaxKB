@@ -1,0 +1,33 @@
+version: '3'
+services:
+  pg:
+    image: ghcr.io/1panel-dev/maxkb-python-pg:python3.11-pg15.6
+    container_name: maxkb_pg
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: Password123@postgres
+      POSTGRES_DB: maxkb
+    volumes:
+      - maxkbdata:/var/lib/postgresql/data
+  maxkb:
+    image: mymaxkb
+    container_name: maxkb
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      MAXKB_DB_NAME: maxkb
+      MAXKB_DB_HOST: pg
+      MAXKB_DB_PORT: 5432
+      MAXKB_DB_USER: root
+      MAXKB_DB_PASSWORD: Password123@postgres
+      MAXKB_DB_ENGINE: django.db.backends.postgresql_psycopg2
+      MAXKB_DEBUG: "false"
+      TIME_ZONE: Asia/Shanghai
+    depends_on:
+      - pg
+volumes:
+  maxkbdata:

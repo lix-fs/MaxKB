@@ -181,3 +181,5 @@ models/
 data
 .dev
 poetry.lock
+
+*.tar

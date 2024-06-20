@@ -1,2 +1,7 @@
 .git*
 .idea*
+poetry.lock
+.vscode
+venv
+models
+data

@@ -23,7 +23,7 @@
         v-if="isEdit"
         v-model="form.content"
         placeholder="请输入分段内容"
-        :maxLength="4096"
+        :maxLength="32768"
         :preview="false"
         :toolbars="toolbars"
         style="height: 300px"
@@ -31,7 +31,7 @@
         :footers="footers"
       >
         <template #defFooters>
-          <span style="margin-left: -6px">/ 4096</span>
+          <span style="margin-left: -6px">/ 32768</span>
         </template>
       </MarkdownEditor>
       <MdPreview
@@ -100,7 +100,7 @@ const form = ref<any>({
 const rules = reactive<FormRules>({
   content: [
     { required: true, message: '请输入分段内容', trigger: 'blur' },
-    { max: 4096, message: '内容最多不超过 4096 个字', trigger: 'blur' }
+    { max: 32768, message: '内容最多不超过 32768 个字', trigger: 'blur' }
   ]
 })
 

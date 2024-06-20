@@ -277,11 +277,11 @@ def filter_special_char(content: str):
 
 class SplitModel:
 
-    def __init__(self, content_level_pattern, with_filter=True, limit=4096):
+    def __init__(self, content_level_pattern, with_filter=True, limit=14096):
         self.content_level_pattern = content_level_pattern
         self.with_filter = with_filter
         if limit is None or limit > 4096:
-            limit = 4096
+            limit = 14096
         if limit < 50:
             limit = 50
         self.limit = limit
