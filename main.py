@@ -71,5 +71,4 @@ if __name__ == '__main__':
     elif action == "collect_static":
         collect_static()
     else:
-        collect_static()
         start_services()

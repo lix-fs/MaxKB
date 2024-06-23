@@ -169,10 +169,6 @@ class BaseChatStep(IChatStep):
                        padding_problem_text: str = None,
                        client_id=None, client_type=None,
                        no_references_setting=None):
-        for message in message_list:
-            logging.getLogger("max_kb").info(f"message:{message}")
-        for paragraph in paragraph_list:
-            logging.getLogger("max_kb").info(f"paragraph:{paragraph}")
         chat_result, is_ai_chat = self.get_stream_result(message_list, chat_model, paragraph_list,
                                                          no_references_setting)
         chat_record_id = uuid.uuid1()
