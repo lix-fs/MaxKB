@@ -1,7 +1,7 @@
 version: '3'
 services:
   pg:
-    image: ghcr.io/1panel-dev/maxkb-python-pg:python3.11-pg15.6
+    image: maxkb-pg
     container_name: maxkb_pg
     restart: always
     ports:

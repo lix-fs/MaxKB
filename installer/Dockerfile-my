@@ -1,10 +1,7 @@
 # 第一阶段：从已有的vector-model基础镜像构建
 FROM ghcr.io/1panel-dev/maxkb-vector-model:v1.0.1 as vector-model
 
-# 第二阶段：提取前端应用
-FROM maxkb_ui as web-build
-
-# 第三阶段：安装Python依赖并准备应用程序
+# 第二阶段：安装Python依赖并准备应用程序
 FROM maxkb_python as stage-build
 
 # 安装必要的依赖
@@ -18,14 +15,13 @@ COPY ./apps /opt/maxkb/app/apps
 COPY ./main.py /opt/maxkb/app
 COPY ./pyproject.toml /opt/maxkb/app
 
-RUN mkdir -p /opt/maxkb/model /opt/maxkb/conf && \
-    rm -rf /opt/maxkb/app/ui
+RUN mkdir -p /opt/maxkb/model /opt/maxkb/conf /opt/maxkb/app/ui
 
 # 复制配置文件
 COPY ./config_example.yml /opt/maxkb/conf
 
-# 复制前端构建结果
-COPY --from=web-build /ui /opt/maxkb/app/ui
+# 复制前端文件
+COPY ./ui/dist /opt/maxkb/app/ui/dist
 
 WORKDIR /opt/maxkb/app
 
