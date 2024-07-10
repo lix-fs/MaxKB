@@ -88,39 +88,35 @@
                 </div>
               </template>
             </el-dropdown-menu>
-            <div class="breadcrumb__footer border-t" style="padding: 8px 11px; min-width: 200px">
-              <template v-if="isApplication">
-                <div
-                  class="w-full text-left cursor"
-                  @click="router.push({ path: '/application/create' })"
-                >
-                  <el-button link>
-                    <el-icon class="mr-4"><Plus /></el-icon> 创建应用
-                  </el-button>
-                </div>
-              </template>
-              <template v-else-if="isDataset">
-                <div
-                  class="w-full text-left cursor"
-                  @click="router.push({ path: '/dataset/create' })"
-                >
-                  <el-button link>
-                    <el-icon class="mr-4"><Plus /></el-icon> 创建知识库
-                  </el-button>
-                </div>
-              </template>
-            </div>
           </div>
         </el-scrollbar>
+        <div class="breadcrumb__footer border-t" style="padding: 8px 11px; min-width: 200px">
+          <template v-if="isApplication">
+            <div class="w-full text-left cursor" @click="openCreateDialog">
+              <el-button link>
+                <el-icon class="mr-4"><Plus /></el-icon> 创建应用
+              </el-button>
+            </div>
+          </template>
+          <template v-else-if="isDataset">
+            <div class="w-full text-left cursor" @click="router.push({ path: '/dataset/create' })">
+              <el-button link>
+                <el-icon class="mr-4"><Plus /></el-icon> 创建知识库
+              </el-button>
+            </div>
+          </template>
+        </div>
       </template>
     </el-dropdown>
   </div>
+  <CreateApplicationDialog ref="CreateApplicationDialogRef" @refresh="refresh" />
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { onBeforeRouteLeave, useRouter, useRoute } from 'vue-router'
-import { isAppIcon } from '@/utils/application'
+import CreateApplicationDialog from '@/views/application/component/CreateApplicationDialog.vue'
+import { isAppIcon, isWorkFlow } from '@/utils/application'
 import useStore from '@/stores'
 const { common, dataset, application } = useStore()
 const route = useRoute()
@@ -128,42 +124,52 @@ const router = useRouter()
 const {
   meta: { activeMenu },
   params: { id }
-} = route
+} = route as any
 
 onBeforeRouteLeave((to, from) => {
   common.saveBreadcrumb(null)
 })
 
+const CreateApplicationDialogRef = ref()
 const list = ref<any[]>([])
 const loading = ref(false)
 
 const breadcrumbData = computed(() => common.breadcrumb)
 
 const current = computed(() => {
-  const {
-    params: { id }
-  } = route
   return list.value?.filter((v) => v.id === id)?.[0]
 })
-// const current = computed(() => {
-//   const {
-//     params: { id }
-//   } = route
-//   return list.value?.filter((v) => v.id === id)?.[0]?.type
-// })
 
 const isApplication = computed(() => {
-  const { meta } = route as any
-  return meta?.activeMenu.includes('application')
+  return activeMenu.includes('application')
 })
 const isDataset = computed(() => {
-  const { meta } = route as any
-  return meta?.activeMenu.includes('dataset')
+  return activeMenu.includes('dataset')
 })
+
+function openCreateDialog() {
+  CreateApplicationDialogRef.value.open()
+}
+
 function changeMenu(id: string) {
   const lastMatched = route.matched[route.matched.length - 1]
   if (lastMatched) {
-    router.push({ name: lastMatched.name, params: { id: id } })
+    if (isDataset.value) {
+      router.push({ name: lastMatched.name, params: { id: id } })
+    } else if (isApplication.value) {
+      const type = list.value?.filter((v) => v.id === id)?.[0]?.type
+      if (
+        isWorkFlow(type) &&
+        (lastMatched.name === 'AppSetting' || lastMatched.name === 'AppHitTest')
+      ) {
+        router.push({ path: `/application/${id}/${type}/overview` })
+      } else {
+        router.push({
+          name: lastMatched.name,
+          params: { id: id, type: type }
+        })
+      }
+    }
   }
 }
 
@@ -192,6 +198,9 @@ function getApplication() {
     .catch(() => {
       loading.value = false
     })
+}
+function refresh() {
+  common.saveBreadcrumb(null)
 }
 onMounted(() => {
   if (!breadcrumbData.value) {

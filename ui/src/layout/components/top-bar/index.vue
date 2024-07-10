@@ -2,10 +2,9 @@
 <template>
   <div class="top-bar-container border-b flex-between">
     <div class="flex-center h-full">
-      <div class="app-title-container flex-center cursor" @click="router.push('/')">
-        <div class="app-title-icon"></div>
-        <div class="app-title-text app-logo-font ml-4">
-          {{ defaultTitle }}
+      <div class="app-title-container cursor" @click="router.push('/')">
+        <div class="logo flex-center">
+          <img src="@/assets/MaxKB-logo.svg" height="35" />
         </div>
       </div>
       <TopMenu></TopMenu>
@@ -24,7 +23,7 @@
           iconName="app-reading"
           class="cursor color-secondary mr-8 ml-8"
           style="font-size: 20px"
-          @click="toUrl('https://github.com/1Panel-dev/MaxKB/wiki')"
+          @click="toUrl('https://maxkb.cn/docs/')"
         ></AppIcon>
       </el-tooltip>
       <el-tooltip effect="dark" :content="$t('layout.topbar.forum')" placement="top">
@@ -83,17 +82,6 @@ function toUrl(url: string) {
 
   .app-title-container {
     margin-right: 45px;
-
-    .app-title-icon {
-      background-image: url('@/assets/logo.png');
-      background-size: 100% 100%;
-      width: 35px;
-      height: 35px;
-    }
-
-    .app-title-text {
-      font-size: 24px;
-    }
   }
 
   .line {

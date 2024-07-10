@@ -1,20 +1,34 @@
 <template>
-  <el-dialog :title="$t('views.applicationOverview.appInfo.LimitDialog.dialogTitle')" v-model="dialogVisible">
+  <el-dialog
+    :title="$t('views.applicationOverview.appInfo.LimitDialog.dialogTitle')"
+    v-model="dialogVisible"
+  >
     <el-form label-position="top" ref="limitFormRef" :model="form">
-      <el-form-item :label="$t('views.applicationOverview.appInfo.LimitDialog.showSourceLabel')" @click.prevent>
+      <el-form-item
+        :label="$t('views.applicationOverview.appInfo.LimitDialog.showSourceLabel')"
+        @click.prevent
+      >
         <el-switch size="small" v-model="form.show_source"></el-switch>
       </el-form-item>
-      <el-form-item :label="$t('views.applicationOverview.appInfo.LimitDialog.clientQueryLimitLabel')">
+      <el-form-item
+        :label="$t('views.applicationOverview.appInfo.LimitDialog.clientQueryLimitLabel')"
+      >
         <el-input-number
           v-model="form.access_num"
           :min="0"
           :step="1"
+          :value-on-clear="0"
           controls-position="right"
           step-strictly
         />
-        <span class="ml-4">{{$t('views.applicationOverview.appInfo.LimitDialog.timesDays')}}</span>
+        <span class="ml-4">{{
+          $t('views.applicationOverview.appInfo.LimitDialog.timesDays')
+        }}</span>
       </el-form-item>
-      <el-form-item :label="$t('views.applicationOverview.appInfo.LimitDialog.whitelistLabel')" @click.prevent>
+      <el-form-item
+        :label="$t('views.applicationOverview.appInfo.LimitDialog.whitelistLabel')"
+        @click.prevent
+      >
         <el-switch size="small" v-model="form.white_active"></el-switch>
       </el-form-item>
       <el-form-item>
@@ -28,9 +42,11 @@
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click.prevent="dialogVisible = false">{{$t('views.applicationOverview.appInfo.LimitDialog.cancelButtonText')}} </el-button>
+        <el-button @click.prevent="dialogVisible = false"
+          >{{ $t('views.applicationOverview.appInfo.LimitDialog.cancelButtonText') }}
+        </el-button>
         <el-button type="primary" @click="submit(limitFormRef)" :loading="loading">
-          {{$t('views.applicationOverview.appInfo.LimitDialog.saveButtonText')}}
+          {{ $t('views.applicationOverview.appInfo.LimitDialog.saveButtonText') }}
         </el-button>
       </span>
     </template>
@@ -103,15 +119,4 @@ const submit = async (formEl: FormInstance | undefined) => {
 
 defineExpose({ open })
 </script>
-<style lang="scss" scope>
-.embed-dialog {
-  .code {
-    color: var(--app-text-color) !important;
-    background: var(--app-layout-bg-color);
-    font-weight: 400;
-    font-size: 13px;
-    white-space: pre;
-    height: 180px;
-  }
-}
-</style>
+<style lang="scss" scope></style>

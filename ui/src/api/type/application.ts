@@ -12,6 +12,8 @@ interface ApplicationFormType {
   model_setting?: any
   problem_optimization?: boolean
   icon?: string | undefined
+  type?: string
+  work_flow?: any
 }
 interface chatType {
   id: string
@@ -28,6 +30,7 @@ interface chatType {
   is_stop?: boolean
   record_id: string
   vote_status: string
+  status?: number
 }
 
 export class ChatRecordManage {
@@ -102,6 +105,12 @@ export class ChatManagement {
     const chatRecord = this.chatMessageContainer[chatRecordId]
     if (chatRecord) {
       chatRecord.append(content)
+    }
+  }
+  static updateStatus(chatRecordId: string, code: number) {
+    const chatRecord = this.chatMessageContainer[chatRecordId]
+    if (chatRecord) {
+      chatRecord.chat.status = code
     }
   }
   /**

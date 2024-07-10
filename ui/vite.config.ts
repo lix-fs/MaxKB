@@ -18,6 +18,8 @@ export default defineConfig(({ mode }) => {
   }
 
   return {
+    preflight: false,
+    lintOnSave: false,
     base: ENV.VITE_BASE_PATH,
     envDir,
     plugins: [

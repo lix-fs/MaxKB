@@ -137,9 +137,17 @@
     $t('views.application.applicationForm.form.relatedKnowledgeBaseWhere')
   }}</el-text>
                   <el-row :gutter="12" v-else>
-                    <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12" class="mb-8"
-                      v-for="(item, index) in applicationForm.dataset_id_list" :key="index">
-                      <el-card class="relate-dataset-card" shadow="never">
+                    <el-col
+                      :xs="24"
+                      :sm="24"
+                      :md="24"
+                      :lg="12"
+                      :xl="12"
+                      class="mb-8"
+                      v-for="(item, index) in applicationForm.dataset_id_list"
+                      :key="index"
+                    >
+                      <el-card class="relate-dataset-card border-r-4" shadow="never">
                         <div class="flex-between">
                           <div class="flex align-center">
                             <AppAvatar v-if="relatedObject(datasetList, item, 'id')?.type === '1'"
@@ -147,7 +155,7 @@
                               <img src="@/assets/icon_web.svg" style="width: 58%" alt="" />
                             </AppAvatar>
 
-                            <AppAvatar v-else class="mr-12" shape="square" :size="32">
+                            <AppAvatar v-else class="mr-8" shape="square" :size="32">
                               <img src="@/assets/icon_document.svg" style="width: 58%" alt="" />
                             </AppAvatar>
                             <div class="ellipsis">
@@ -229,11 +237,10 @@
 import { reactive, ref, watch, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { groupBy } from 'lodash'
-import ParamSettingDialog from './components/ParamSettingDialog.vue'
-import AddDatasetDialog from './components/AddDatasetDialog.vue'
+import ParamSettingDialog from './component/ParamSettingDialog.vue'
+import AddDatasetDialog from './component/AddDatasetDialog.vue'
 import CreateModelDialog from '@/views/template/component/CreateModelDialog.vue'
 import SelectProviderDialog from '@/views/template/component/SelectProviderDialog.vue'
-import { MdEditor } from 'md-editor-v3'
 import applicationApi from '@/api/application'
 import type { FormInstance, FormRules } from 'element-plus'
 import type { ApplicationFormType } from '@/api/type/application'
@@ -285,7 +292,8 @@ const applicationForm = ref<ApplicationFormType>({
   model_setting: {
     prompt: defaultPrompt
   },
-  problem_optimization: false
+  problem_optimization: false,
+  type: 'SIMPLE'
 })
 
 const rules = reactive<FormRules<ApplicationFormType>>({
@@ -447,7 +455,6 @@ watch(
 .create-application {
   .relate-dataset-card {
     color: var(--app-text-color);
-    border-radius: 4px;
   }
 
   .dialog-bg {
